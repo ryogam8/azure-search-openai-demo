@@ -4,9 +4,10 @@ import { SparkleFilled } from "@fluentui/react-icons";
 
 import styles from "./Chat.module.css";
 
-import { chatApi, Approaches, AskResponse, ChatRequest, ChatTurn } from "../../api";
+import { chatApi, Approaches, AskResponse, ChatRequest, ChatTurn, runQueryWorkspace, QueryResultData, QueryResultTable, QueryError } from "../../api";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
-import { QuestionInput } from "../../components/QuestionInput";
+import { QuestionInput } from "../../components/QuestionInput"
+import { Default } from "../../components/Table";
 import { ExampleList } from "../../components/Example";
 import { UserChatMessage } from "../../components/UserChatMessage";
 import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
@@ -33,6 +34,22 @@ const Chat = () => {
 
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
     const [answers, setAnswers] = useState<[user: string, response: AskResponse][]>([]);
+    const [queryResultTable, setQueryResultTable] = useState<QueryResultTable>();
+    const [queryResultError, setQueryResultError] = useState<QueryError>();
+
+    const [answerString, setAnswerString] = useState<string>("");
+
+    function extractCodeBlocks(text: string): string[] {
+        const codeBlocks: string[] = [];
+        const regex = /```([\s\S]*?)```/g;
+        let match;
+
+        while ((match = regex.exec(text)) !== null) {
+            const codeBlock = match[1].trim();
+            codeBlocks.push(codeBlock);
+        }
+        return codeBlocks;
+    }
 
     const makeApiRequest = async (question: string) => {
         lastQuestionRef.current = question;
@@ -57,6 +74,7 @@ const Chat = () => {
                 }
             };
             const result = await chatApi(request);
+            setAnswerString(result.answer);
             setAnswers([...answers, [question, result]]);
         } catch (e) {
             setError(e);
@@ -64,6 +82,30 @@ const Chat = () => {
             setIsLoading(false);
         }
     };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const codeBlocks = extractCodeBlocks(answerString);
+                console.log(codeBlocks);
+                if (codeBlocks.length !== 0) {
+                    console.log(codeBlocks[0]);
+                    const queryResultData = await runQueryWorkspace(codeBlocks[0]);
+                    console.log(`queryResultData: ${JSON.stringify(queryResultData)}`);
+                    if ("tables" in queryResultData) {
+                        const table = queryResultData["tables"][0];
+                        setQueryResultTable(table);
+                        console.log(queryResultTable);
+                    } else {
+                        setQueryResultTable(undefined);
+                        setQueryResultError(queryResultData);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, [answerString]);
 
     const clearChat = () => {
         lastQuestionRef.current = "";
@@ -177,7 +219,12 @@ const Chat = () => {
                             <div ref={chatMessageStreamEnd} />
                         </div>
                     )}
-
+                    {queryResultTable && (
+                        <div className={styles.table}>
+                            <Default queryResultTable={queryResultTable} />
+                        </div>
+                    )}
+                    {}
                     <div className={styles.chatInput}>
                         <QuestionInput
                             clearOnSend

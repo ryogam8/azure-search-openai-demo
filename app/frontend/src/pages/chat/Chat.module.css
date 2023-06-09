@@ -88,6 +88,17 @@
     background: #f2f2f2;
 }
 
+.table {
+    flex: 1;
+    padding-top: 12px;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: 100%;
+    max-width: 1028px;
+    background: #f2f2f2;
+}
+
 .chatAnalysisPanel {
     flex: 1;
     overflow-y: auto;
