@@ -39,3 +39,34 @@ export type ChatRequest = {
     approach: Approaches;
     overrides?: AskRequestOverrides;
 };
+
+export type QueryResultColumn = {
+    name: string;
+    type: string;
+};
+
+export type QueryResultTable = {
+    name: string;
+    columns: QueryResultColumn[];
+    rows: string[][];
+};
+
+export type QueryResultData = {
+    tables: QueryResultTable[];
+};
+
+export type QueryError = {
+    error: {
+        message: string;
+        code: string;
+        correlationId: string;
+        innererror: {
+            code: string;
+            message: string;
+            innererror: {
+                code: string;
+                message: string;
+            };
+        };
+    };
+};

@@ -1,4 +1,4 @@
-import { AskRequest, AskResponse, ChatRequest } from "./models";
+import { AskRequest, AskResponse, ChatRequest, QueryResultData, QueryError } from "./models";
 
 export async function askApi(options: AskRequest): Promise<AskResponse> {
     const response = await fetch("/ask", {
@@ -63,4 +63,15 @@ export async function chatApi(options: ChatRequest): Promise<AskResponse> {
 
 export function getCitationFilePath(citation: string): string {
     return `/content/${citation}`;
+}
+
+export async function runQueryWorkspace(query: string): Promise<QueryResultData | QueryError> {
+    const response = await fetch(`/api/log-analytics`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ query: query })
+    });
+    return response.json();
 }
