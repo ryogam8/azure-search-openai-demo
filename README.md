@@ -18,7 +18,7 @@
 
 > **重要：** この例を展開して実行するには、**Azure OpenAI サービスへのアクセスが有効になっている Azure サブスクリプション**が必要です。アクセスをリクエストするには、[こちら](https://aka.ms/oaiapply)をクリックしてください。また、[こちら](https://azure.microsoft.com/free/cognitive-search/)でいくつかの無料の Azure クレジットを入手して始めることもできます。
 
-> **AZURE リソースのコスト** このサンプルでは、デフォルトで月額費用が発生する Azure App Service と Azure Cognitive Search リソース が作成されます。これらのコストを回避するためには、infra フォルダー内のパラメーターファイルを変更して、それぞれの無料バージョンに切り替えることができます（ただし、いくつかの制限があります。たとえば、1 つの Azure サブスクリプションにつき無料の Cognitive Search リソースは 1 つまでになります）。
+> **Azure リソースのコスト** このサンプルでは、デフォルトで月額費用が発生する Azure App Service と Azure Cognitive Search リソース が作成されます。これらのコストを回避するためには、infra フォルダー内のパラメーターファイルを変更して、それぞれの無料バージョンに切り替えることができます（ただし、いくつかの制限があります。たとえば、1 つの Azure サブスクリプションにつき無料の Cognitive Search リソースは 1 つまでになります）。
 
 ### Prerequisites
 
@@ -29,7 +29,7 @@ Azure にクライアントアプリの登録を行い、シークレットを�
 
 ![](assets/2023-06-09-17-32-39.png)
 
-#### add .env file to backend
+#### .env ファイルの追加
 
 /app/backend に .env ファイルを作成して以下のように設定を行います。
 
@@ -43,7 +43,7 @@ CLIENT_SECRET = "xxxx"
 WORKSPACE_ID = "xxxx"
 ```
 
-#### ローカルで実行するために
+#### ローカル実行
 
 - [Azure Developer CLI](https://aka.ms/azure-dev/install)
 - [Python 3+](https://www.python.org/downloads/)
@@ -79,7 +79,7 @@ WORKSPACE_ID = "xxxx"
 
 !['azd up' の実行結果](assets/endpoint.png)
 
-#### 既存のリソースを利用する：
+#### 既存のリソースを利用する場合：
 
 1. `azd env set AZURE_OPENAI_SERVICE {既存の OpenAI サービス名}` を実行します。
 1. `azd env set AZURE_OPENAI_RESOURCE_GROUP {OpenAI サービスが提供される既存のリソースグループ名}` を実行します。
