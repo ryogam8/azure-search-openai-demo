@@ -99,6 +99,7 @@ module backend 'core/host/appservice.bicep' = {
       AZURE_SEARCH_SERVICE: searchService.outputs.name
       AZURE_OPENAI_GPT_DEPLOYMENT: gptDeploymentName
       AZURE_OPENAI_CHATGPT_DEPLOYMENT: chatGptDeploymentName
+      AZURE_TENANT_ID: tenant().tenantId
     }
   }
 }
