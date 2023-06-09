@@ -55,8 +55,8 @@ Thought: {agent_scratchpad}"""
             r = self.search_client.search(q,
                                           filter=filter, 
                                           query_type=QueryType.SEMANTIC, 
-                                          query_language="en-us", 
-                                          query_speller="lexicon", 
+                                          query_language="ja-jp", 
+                                          query_speller="none", 
                                           semantic_configuration_name="default", 
                                           top = top,
                                           query_caption="extractive|highlight-false" if use_semantic_captions else None)
